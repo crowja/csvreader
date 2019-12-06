@@ -1,2 +1,2 @@
-# csvreader
-C scrap for reading CSV files.
+# csvreader 0.0.0
+
