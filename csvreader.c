@@ -1,6 +1,6 @@
 /**
  *  @file csvreader.c
- *  @version 0.0.1-dev0
+ *  @version 0.0.2-dev0
  *  @date Sun Dec  1 20:00:46 CST 2019
  *  @copyright %COPYRIGHT%
  *  @brief FIXME
@@ -105,7 +105,7 @@ csvreader_init(struct csvreader *p, void *x)
 const char *
 csvreader_version(void)
 {
-   return "0.0.1-dev0";
+   return "0.0.2-dev0";
 }
 
 /*** csvreader_next() ***/

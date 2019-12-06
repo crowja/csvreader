@@ -1,6 +1,6 @@
 /**
  *  @file csvreader.h
- *  @version 0.0.1-dev0
+ *  @version 0.0.2-dev0
  *  @date Sun Dec  1 20:00:46 CST 2019
  *  @copyright %COPYRIGHT%
  *  @brief FIXME
