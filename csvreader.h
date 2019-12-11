@@ -29,7 +29,7 @@ struct csvreader *csvreader_new(char *fname);
  *  @details FIXME longer description here ...
  */
 
-void        csvreader_free(struct csvreader *p);
+void        csvreader_free(struct csvreader **pp);
 
 /**
  *  @brief Initialize a csvreader object.

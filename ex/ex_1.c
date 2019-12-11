@@ -3,7 +3,7 @@
 #include "csvreader.h"
 
 int
-main(int argc, char *argv[])
+main(void)
 {
    char      **cpp;
    unsigned    n;
@@ -13,7 +13,7 @@ main(int argc, char *argv[])
       printf("%d fields\n", n);
    }
 
-   csvreader_free(r);
+   csvreader_free(&r);
 
    return 0;
 }

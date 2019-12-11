@@ -43,7 +43,6 @@ _printf_test_name(char *name, char *info)
       printf("\n");
 }
 
-
 static int
 _two_doubles_equal(double x, double y)
 {
@@ -51,34 +50,34 @@ _two_doubles_equal(double x, double y)
    return fabs(x - y) < 4 * DBL_EPSILON * t ? 1 : 0;
 }
 
-
 static void
 test_constr(void)
 {
    struct csvreader *z;
 
-   _printf_test_name("test_constr()", "csvreader_new, csvreader_free");
+   _printf_test_name("test_constr", "csvreader_new, csvreader_free");
 
    z = csvreader_new(NULL);
    ASSERT("Constructor test", z);
-   csvreader_free(z);
-
+   csvreader_free(&z);
+   ASSERT_EQUALS(NULL, z);
 }
 
-#if 0                                            /* 14 yy */
+#if 0                                            /* 15 yy */
 static void
 test_stub(void)
 {
    struct csvreader *z;
    double      x = 1.23;                    /* TODO */
 
-   _printf_test_name("test_stub()", NULL);
+   _printf_test_name("test_stub", NULL);
 
    z = csvreader_new(NULL);
    ASSERT("Constructor test, pt 1", z);
    ASSERT("Here's a test ...", _two_doubles_equal(x, 1.23));
 
-   csvreader_free(z);
+   csvreader_free(&z);
+   ASSERT_EQUALS(NULL, z);
 }
 #endif
 

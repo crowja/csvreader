@@ -51,8 +51,6 @@ struct csvreader {
    struct varstr *tmp;
 };
 
-/*** csvreader_new() ***/
-
 struct csvreader *
 csvreader_new(char *fname)
 {
@@ -78,17 +76,14 @@ csvreader_new(char *fname)
    return tp;
 }
 
-/*** csvreader_free() ***/
-
 void
-csvreader_free(struct csvreader *p)
+csvreader_free(struct csvreader **pp)
 {
 
-   varstr_free(p->tmp);
-   _FREE(p);
+   varstr_free(&(*pp)->tmp);
+   _FREE(*pp);
+   *pp = NULL;
 }
-
-/*** csvreader_init() ***/
 
 int
 csvreader_init(struct csvreader *p, void *x)
@@ -100,15 +95,11 @@ csvreader_init(struct csvreader *p, void *x)
    return 0;
 }
 
-/*** csvreader_version() ***/
-
 const char *
 csvreader_version(void)
 {
    return "0.0.2-dev0";
 }
-
-/*** csvreader_next() ***/
 
 int
 csvreader_next(struct csvreader *p, unsigned *n, char ***cpp)
