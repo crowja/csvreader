@@ -1,10 +1,9 @@
 /**
  *  @file csvreader.h
  *  @version 0.0.2-dev0
- *  @date Fri Dec  6 22:26:40 CST 2019
- *  @copyright %COPYRIGHT%
- *  @brief FIXME
- *  @details FIXME
+ *  @date Wed Jan  1 21:33:23 CST 2020
+ *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @license Unlicense <http://unlicense.org/>
  */
 
 #ifndef _CSVREADER_H_
