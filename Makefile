@@ -81,8 +81,8 @@ indent: stamp
 	@indent $(INDENT_FLAGS) ex/ex_1.c
 
 stamp:
-	@bash stamper.bash csvreader.c
-	@bash stamper.bash csvreader.h
+	@stamper.bash csvreader.c
+	@stamper.bash csvreader.h
 
 clean:
 	@/bin/rm -f *.o *~ *.BAK *.bak core.*
