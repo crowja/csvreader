@@ -21,6 +21,9 @@ EXAMPLES = ex/ex_1
 csvreader.o: csvreader.c csvreader.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ csvreader.c
 
+stringer.o: stringer.c stringer.h
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ stringer.c
+
 varstr.o: varstr.c varstr.h
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ varstr.c
 
@@ -30,7 +33,7 @@ check:
 	  echo "--------------------"; \
 	  echo "Running test $$i ..."; \
 	  ( $(CC)    $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c csvreader.c varstr.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c csvreader.c stringer.c varstr.c $(LDFLAGS) ) \
 	  && ( t/a.out ); \
 	done 
 
@@ -40,7 +43,7 @@ check-examples:
 	  echo "--------------------"; \
 	  echo "Running example $$i ..."; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o ex/a.out $$i.c csvreader.c varstr.c $(LDFLAGS) ) \
+		-o ex/a.out $$i.c csvreader.c stringer.c varstr.c $(LDFLAGS) ) \
 	  && ( valgrind $(VALGRIND_FLAGS) ex/a.out < ex/fake.txt ); \
 	done 
 
@@ -50,7 +53,7 @@ vcheck:
 	  echo "--------------------"; \
 	  echo "Running test $$i ..."; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c csvreader.c varstr.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c csvreader.c stringer.c varstr.c $(LDFLAGS) ) \
 	  && ( valgrind $(VALGRIND_FLAGS) t/a.out ); \
 	done 
 
@@ -60,7 +63,7 @@ scheck:
 	  echo "--------------------"; \
 	  echo "Running test $$i ..."; \
 	  ( $(CC) -g $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(GCC_SANITIZE_FLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c csvreader.c varstr.c $(LDFLAGS) ) \
+		-o t/a.out $$i.c csvreader.c stringer.c varstr.c $(LDFLAGS) ) \
 	  && ( t/a.out ); \
 	done 
 
@@ -70,7 +73,7 @@ echeck:
 	  echo "--------------------"; \
 	  echo "Running test $$i ..."; \
 	  ( $(CC)    $(CPPFLAGS) $(OTHER_INCLUDE) $(CFLAGS) $(OTHER_SOURCE) \
-		-o t/a.out $$i.c csvreader.c varstr.c $(LDFLAGS_EFENCE) ) \
+		-o t/a.out $$i.c csvreader.c stringer.c varstr.c $(LDFLAGS_EFENCE) ) \
 	  && ( LD_PRELOAD=libefence.so ./t/a.out ); \
 	done 
 
