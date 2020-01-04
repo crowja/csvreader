@@ -10,7 +10,7 @@
 #include <stdio.h>                               /* FIXME */
 #include <string.h>                              /* FIXME */
 #include "varstr.h"
-#include "stringer.h"
+#include "sbuf.h"
 #include "csvreader.h"
 
 #ifdef  _IS_NULL
@@ -42,7 +42,7 @@ enum states { s_at_start, s_at_end, s_in_comment, s_in_quoted_field,
 
 struct csvreader {
    void       *x;
-   struct stringer *fields;
+   struct sbuf *fields;
    enum states state;
    FILE       *in;
    struct varstr *tmp;
@@ -58,7 +58,7 @@ csvreader_new(char *fname)
       return NULL;
 
    tp->x = NULL;
-   tp->fields = stringer_new();
+   tp->fields = sbuf_new();
    tp->state = s_at_start;
 
    if (_IS_NULL(fname))
@@ -77,7 +77,7 @@ csvreader_free(struct csvreader **pp)
 {
 
    varstr_free(&(*pp)->tmp);
-   stringer_free(&(*pp)->fields);
+   sbuf_free(&(*pp)->fields);
    _FREE(*pp);
    *pp = NULL;
 }
