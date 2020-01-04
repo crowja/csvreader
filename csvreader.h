@@ -1,6 +1,6 @@
 /**
  *  @file csvreader.h
- *  @version 0.1.0-dev0
+ *  @version 0.1.1-dev0
  *  @date Wed Jan  1 21:33:23 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
