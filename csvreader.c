@@ -1,6 +1,6 @@
 /**
  *  @file csvreader.c
- *  @version 0.1.1-dev0
+ *  @version 0.1.2-dev0
  *  @date Wed Jan  1 21:33:23 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
@@ -95,7 +95,7 @@ csvreader_init(struct csvreader *p, void *x)
 const char *
 csvreader_version(void)
 {
-   return "0.1.1-dev0";
+   return "0.1.2-dev0";
 }
 
 int
