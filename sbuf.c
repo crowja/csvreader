@@ -1,7 +1,7 @@
 /**
  *  @file sbuf.c
- *  @version 0.4.1-dev0
- *  @date Sat Jan  4 11:58:33 CST 2020
+ *  @version 0.5.2-dev0
+ *  @date Sun Jan  5 21:31:55 CST 2020
  *  @copyright 2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  *  @brief Methods for creating and parsing a buffer of strings.
@@ -31,7 +31,7 @@
 #endif
 #define _EXTEND_BUFSZ  1024
 
-/* Character pointer array size extensions */
+/* Character pointer array size extensions, > 1 */
 #ifdef  _EXTEND_LSTSZ
 #undef  _EXTEND_LSTSZ
 #endif
@@ -42,7 +42,7 @@ struct sbuf {
    size_t      lsize;                       /* malloced size of list */
    char       *buffer;                      /* the array of chars */
    size_t      bsize;                       /* malloced size of buffer */
-   unsigned    bpos;                        /* next buffer position to to write to */
+   unsigned    next;                        /* next buffer position to to write to */
 };
 
 struct sbuf *
@@ -58,7 +58,7 @@ sbuf_new(void)
    tp->lsize = 0;
    tp->buffer = NULL;
    tp->bsize = 0;
-   tp->bpos = 0;
+   tp->next = 0;
 
    return tp;
 }
@@ -75,29 +75,24 @@ sbuf_free(struct sbuf **pp)
 const char *
 sbuf_version(void)
 {
-   return "0.4.1-dev0";
+   return "0.5.2-dev0";
 }
 
 int
 sbuf_putc(struct sbuf *p, int c)
 {
-
    /* More space for the buffer? */
-   if (p->bpos + 2 > p->bsize) {
+   if (p->next + 2 > p->bsize) {
       char       *tp = realloc(p->buffer, sizeof(char) * (p->bsize + _EXTEND_BUFSZ));
       if (_IS_NULL(tp))
-         return EOF;
+         return EOF;                             /* FIXME */
       p->buffer = tp;
       p->bsize += _EXTEND_BUFSZ;
    }
 
-   (p->buffer)[p->bpos] = c;
+   (p->buffer)[p->next] = c;
 
-#if 0
-   printf("DEBUG JUST SET (p->buffer)[%d] as %c\n", p->bpos, c);
-#endif
-
-   p->bpos += 1;
+   p->next++;
 
    return c;
 }
@@ -105,44 +100,53 @@ sbuf_putc(struct sbuf *p, int c)
 int
 sbuf_reset(struct sbuf *p)
 {
-   p->bpos = 0;
+   p->next = 0;
    return 0;
 }
 
-char      **
-sbuf_strings(struct sbuf *p)
+int
+sbuf_strings(struct sbuf *p, unsigned *n, char ***cpp)
 {
-   unsigned    bpos;
-   unsigned    start = 0;
-   unsigned    lpos = 0;
-   void      **tp;
+   unsigned    i = 0, j = 0;                /* span each string */
+   unsigned    k = 0;                       /* count strings */
 
-   if (p->bpos == 0)
-      return NULL;
-
-   if ((p->buffer)[p->bpos - 1] != '\0') {
-      sbuf_putc(p, '\0');
+   if (p->next == 0) {
+      *n = 0;
+      *cpp = NULL;
+      return 0;
    }
 
-   for (bpos = 0; bpos < p->bpos; bpos++) {
+   if (p->lsize == 0) {
+      char      **tp;
+      tp = realloc(p->list, sizeof(char *) * _EXTEND_LSTSZ);
+      p->list = tp;
+      p->lsize = _EXTEND_LSTSZ;
+   }
 
-      if ((p->buffer)[bpos] == '\0') {           /* end of string */
-
-         if (lpos + 2 >= p->lsize) {
+   while (j < p->next) {
+      if ((p->buffer)[j] == '\0') {              /* end of string */
+         if (k + 2 >= p->lsize) {                /* need to extend p->list? */
+            char      **tp;
             tp = realloc(p->list, sizeof(char *) * (p->lsize + _EXTEND_LSTSZ));
-            p->list = (char **) tp;
+            /* FIXME assuming success */
+            p->list = tp;
             p->lsize += _EXTEND_LSTSZ;
          }
 
-         (p->list)[lpos] = p->buffer + start;    /* need to extend list size? */
-         lpos += 1;
-         start = bpos + 1;
+         (p->list)[k] = p->buffer + i;
+         j++;
+         k++;
+         i = j;
       }
+      else
+         j++;
    }
 
-   (p->list)[lpos] = (char *) NULL;              /* terminal NULL */
+   (p->list)[k] = (char *) NULL;                 /* terminal NULL */
+   *n = k;
+   *cpp = (0 == k ? NULL : p->list);
 
-   return (char **) p->list;
+   return 0;
 }
 
 #undef _EXTEND_BUFSZ
