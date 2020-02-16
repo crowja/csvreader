@@ -1,8 +1,8 @@
 /**
  *  @file csvreader.c
  *  @version 0.2.0-dev0
- *  @date Wed Jan  1 21:33:23 CST 2020
- *  @copyright 2020 John A. Crow <crowja@gmail.com>
+ *  @date Sun Feb 16, 2020 04:31:33 PM CST
+ *  @copyright 2019-2020 John A. Crow <crowja@gmail.com>
  *  @license Unlicense <http://unlicense.org/>
  */
 
@@ -13,23 +13,23 @@
 #include "sbuf.h"
 #include "csvreader.h"
 
-#ifdef  _IS_NULL
-#undef  _IS_NULL
+#ifdef  IS_NULL
+#undef  IS_NULL
 #endif
-#define _IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
+#define IS_NULL(p)   ((NULL == (p)) ? (1) : (0))
 
-#ifdef  _FREE
-#undef  _FREE
+#ifdef  FREE
+#undef  FREE
 #endif
-#define _FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
+#define FREE(p)      ((NULL == (p)) ? (0) : (free((p)), (p) = NULL))
 
 /* Swallow characters represented in s */
 static void
 _gobble(FILE *in, char *s)
 {
    while (1) {
-      int c = fgetc(in);
-      if (_IS_NULL(strchr(s, c))) {
+      int         c = fgetc(in);
+      if (IS_NULL(strchr(s, c))) {
          ungetc(c, in);                          /* not in the list, replace */
          return;
       }
@@ -54,14 +54,14 @@ csvreader_new(char *fname)
    struct csvreader *tp;
 
    tp = (struct csvreader *) malloc(sizeof(struct csvreader));
-   if (_IS_NULL(tp))
+   if (IS_NULL(tp))
       return NULL;
 
    tp->x = NULL;
    tp->fields = sbuf_new();
    tp->state = s_at_start;
 
-   if (_IS_NULL(fname))
+   if (IS_NULL(fname))
       tp->in = stdin;
 
    else
@@ -78,7 +78,7 @@ csvreader_free(struct csvreader **pp)
 
    varstr_free(&(*pp)->tmp);
    sbuf_free(&(*pp)->fields);
-   _FREE(*pp);
+   FREE(*pp);
    *pp = NULL;
 }
 
@@ -129,5 +129,5 @@ csvreader_next(struct csvreader *p, unsigned *n, char ***cpp)
    return 0;
 }
 
-#undef  _IS_NULL
-#undef  _FREE
+#undef  IS_NULL
+#undef  FREE
